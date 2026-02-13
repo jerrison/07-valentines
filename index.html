@@ -452,6 +452,11 @@
     // After first click, make it run away
     if (noCount >= 1) {
       noBtn.classList.remove('in-card');
+      // Move button to body so it escapes the card's stacking context
+      // (backdrop-filter creates a containing block for fixed elements)
+      if (noBtn.parentElement !== document.body) {
+        document.body.appendChild(noBtn);
+      }
       moveNoButton();
     }
   }
