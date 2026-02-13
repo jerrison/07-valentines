@@ -25,8 +25,8 @@
 
   html, body {
     width: 100%;
-    min-height: 100vh;
-    overflow-x: hidden;
+    height: 100%;
+    overflow: hidden;
     font-family: 'Quicksand', sans-serif;
   }
 
@@ -443,8 +443,8 @@
     yesBtn.style.fontSize = newSize + 'px';
     yesBtn.style.padding = newPadV + 'px ' + newPadH + 'px';
 
-    // Shrink no button
-    const shrink = Math.max(0.5, 1 - noCount * 0.04);
+    // Shrink no button slightly
+    const shrink = Math.max(0.7, 1 - noCount * 0.02);
     noBtn.style.transform = `scale(${shrink})`;
 
     // After first click, make it run away
@@ -457,18 +457,17 @@
   function moveNoButton() {
     const vw = window.innerWidth;
     const vh = window.innerHeight;
-    const btnW = noBtn.offsetWidth;
-    const btnH = noBtn.offsetHeight;
-    const pad = 20;
+    const pad = 40;
 
-    const maxX = vw - btnW - pad;
-    const maxY = vh - btnH - pad;
+    // Use a fixed estimate for button size since scale transform
+    // doesn't affect offsetWidth/offsetHeight reliably
+    const btnSize = 140;
 
-    const randX = Math.random() * maxX + pad;
-    const randY = Math.random() * maxY + pad;
+    const randX = pad + Math.random() * (vw - btnSize - pad * 2);
+    const randY = pad + Math.random() * (vh - btnSize - pad * 2);
 
-    noBtn.style.left = randX + 'px';
-    noBtn.style.top = randY + 'px';
+    noBtn.style.left = Math.max(pad, Math.min(randX, vw - btnSize)) + 'px';
+    noBtn.style.top = Math.max(pad, Math.min(randY, vh - btnSize)) + 'px';
   }
 
   noBtn.addEventListener('click', handleNo);
